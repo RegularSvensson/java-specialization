@@ -42,6 +42,12 @@ public class HelloWorld extends PApplet
 	/** The map dimensions */
 	private static int mapWidth = 350;
 	private static int mapHeight = 500;
+	
+	/** Map coordinates */
+	private static float map1latitude = 32.9f;
+	private static float map1longitude = -117.2f;
+	private static float map2latitude = 57.7f;
+	private static float map2longitude = 12.0f;
 
 	public void setup() {
 		size(850, 600, P2D);  // Set up the Applet window to be 800x600
@@ -77,7 +83,7 @@ public class HelloWorld extends PApplet
 
 		// The next line zooms in and centers the map at 
 	    // 32.9 (latitude) and -117.2 (longitude)
-	    map1.zoomAndPanTo(zoomLevel, new Location(32.9f, -117.2f));
+	    map1.zoomAndPanTo(zoomLevel, new Location(map1latitude, map1longitude));
 		
 		// This line makes the map interactive
 		MapUtils.createDefaultEventDispatcher(this, map1);
@@ -90,7 +96,7 @@ public class HelloWorld extends PApplet
 		
 		// Zoom map to Chalmers University of Technology
 		// TODO: Add correct coordinates
-		map2.zoomAndPanTo(zoomLevel, new Location(57.7f, 12.0f));
+		map2.zoomAndPanTo(zoomLevel, new Location(map2latitude, map2longitude));
 		
 		// Make map interactive
 		MapUtils.createDefaultEventDispatcher(this, map2);
