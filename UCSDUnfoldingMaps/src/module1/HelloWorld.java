@@ -55,9 +55,8 @@ public class HelloWorld extends PApplet
 		                      // Processing library's 2D drawing
 		                      // You'll learn more about processing in Module 3
 
-		// This sets the background color for the Applet.  
-		// Play around with these numbers and see what happens!
-		this.background(200, 200, 200);
+		// This sets the background color for the Applet.
+		this.background(0, 0, 254);
 		
 		// Select a map provider
 		AbstractMapProvider provider = new Google.GoogleTerrainProvider();
