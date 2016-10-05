@@ -44,7 +44,7 @@ public class HelloWorld extends PApplet
 	private static int mapHeight = 500;
 
 	public void setup() {
-		size(800, 600, P2D);  // Set up the Applet window to be 800x600
+		size(850, 600, P2D);  // Set up the Applet window to be 800x600
 		                      // The OPENGL argument indicates to use the 
 		                      // Processing library's 2D drawing
 		                      // You'll learn more about processing in Module 3
@@ -85,7 +85,15 @@ public class HelloWorld extends PApplet
 		// TODO: Add code here that creates map2 
 		// Then you'll modify draw() below
 		
+		// Create a second map
+		map2 = new UnfoldingMap(this, mapX * 2 + mapWidth , mapY, mapWidth, mapHeight, provider);
 		
+		// Zoom map to Chalmers University of Technology
+		// TODO: Add correct coordinates
+		map2.zoomAndPanTo(zoomLevel, new Location(57.7f, 12.0f));
+		
+		// Make map interactive
+		MapUtils.createDefaultEventDispatcher(this, map2);
 	}
 
 	/** Draw the Applet window.  */
@@ -93,6 +101,9 @@ public class HelloWorld extends PApplet
 		// So far we only draw map1...
 		// TODO: Add code so that both maps are displayed
 		map1.draw();
+		
+		// Draw second map
+		map2.draw();
 	}
 
 	
