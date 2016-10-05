@@ -34,6 +34,14 @@ public class HelloWorld extends PApplet
 	
 	/** The map you will use to display your home town */ 
 	UnfoldingMap map2;
+	
+	/** The map positions */
+	private static int mapX = 50;
+	private static int mapY = 50;
+	
+	/** The map dimensions */
+	private static int mapWidth = 350;
+	private static int mapHeight = 500;
 
 	public void setup() {
 		size(800, 600, P2D);  // Set up the Applet window to be 800x600
@@ -65,7 +73,7 @@ public class HelloWorld extends PApplet
 		// The 6th argument specifies the map provider.  
 		// There are several providers built-in.
 		// Note if you are working offline you must use the MBTilesMapProvider
-		map1 = new UnfoldingMap(this, 50, 50, 350, 500, provider);
+		map1 = new UnfoldingMap(this, mapX, mapY, mapWidth, mapHeight, provider);
 
 		// The next line zooms in and centers the map at 
 	    // 32.9 (latitude) and -117.2 (longitude)
@@ -76,7 +84,8 @@ public class HelloWorld extends PApplet
 		
 		// TODO: Add code here that creates map2 
 		// Then you'll modify draw() below
-
+		
+		
 	}
 
 	/** Draw the Applet window.  */
