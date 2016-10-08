@@ -40,7 +40,7 @@ public class EarthquakeCityMap extends PApplet {
 	// Less than this threshold is a minor earthquake
 	public static final float THRESHOLD_LIGHT = 4;
 	
-	// Colors
+	// Color variables
 	private final int red = color(255, 0, 0);
 	private final int yellow = color(255, 255, 0);
 	private final int blue = color(0, 0, 255);
@@ -78,17 +78,6 @@ public class EarthquakeCityMap extends PApplet {
 	    //PointFeatures have a getLocation method
 	    List<PointFeature> earthquakes = ParseFeed.parseEarthquake(this, earthquakesURL);
 	    
-	    // These print statements show you (1) all of the relevant properties 
-	    // in the features, and (2) how to get one property and use it
-	    /*
-	    if (earthquakes.size() > 0) {
-	    	PointFeature f = earthquakes.get(0);
-	    	System.out.println(f.getProperties());
-	    	Object magObj = f.getProperty("magnitude");
-	    	float mag = Float.parseFloat(magObj.toString());
-	    	// PointFeatures also have a getLocation method
-	    }
-	    */
 	    // Iterate over earthquakes, adding them as marker to markers
 	    for (PointFeature earthquake : earthquakes) {
 	    	markers.add(createMarker(earthquake));
@@ -133,12 +122,29 @@ public class EarthquakeCityMap extends PApplet {
 	    addKey();
 	}
 
-
-	// helper method to draw key in GUI
-	// TODO: Implement this method to draw the key
+	/**
+	 * Adds a key of magnitudes and corresponding visualisation to PApplet.  
+	 */
 	private void addKey() 
 	{	
-		// Remember you can use Processing's graphics methods here
-	
+		// Create rectangle
+        fill(color(230, 255, 255));
+        rect(25, 50, 150, 250);
+        
+        // Draw text
+        fill(color(0, 0, 0));
+        textSize(14);
+        text("Earthquake Key", 40, 80);
+        text("5.0+ Magnitude", 60, 130);
+        text("4.0+ Magnitude", 60, 180);
+        text("Below 4.0", 60, 230);
+        
+        // Draw circles
+        fill(red);
+        ellipse(40, 125, 15, 15);
+        fill(yellow);
+        ellipse(40, 175, 10, 10);
+        fill(blue);
+        ellipse(40, 225, 5, 5);
 	}
 }
