@@ -39,6 +39,11 @@ public class EarthquakeCityMap extends PApplet {
 	public static final float THRESHOLD_MODERATE = 5;
 	// Less than this threshold is a minor earthquake
 	public static final float THRESHOLD_LIGHT = 4;
+	
+	// Colors
+	private final int red = color(255, 0, 0);
+	private final int yellow = color(255, 255, 0);
+	private final int blue = color(0, 0, 255);
 
 	/** This is where to find the local tiles, for working without an Internet connection */
 	public static String mbTilesString = "blankLight-1-3.mbtiles";
@@ -75,6 +80,7 @@ public class EarthquakeCityMap extends PApplet {
 	    
 	    // These print statements show you (1) all of the relevant properties 
 	    // in the features, and (2) how to get one property and use it
+	    /*
 	    if (earthquakes.size() > 0) {
 	    	PointFeature f = earthquakes.get(0);
 	    	System.out.println(f.getProperties());
@@ -82,15 +88,13 @@ public class EarthquakeCityMap extends PApplet {
 	    	float mag = Float.parseFloat(magObj.toString());
 	    	// PointFeatures also have a getLocation method
 	    }
-	    
-	    // Here is an example of how to use Processing's color method to generate 
-	    // an int that represents the color yellow.  
-	    int yellow = color(255, 255, 0);
-	    
+	    */
+	    // Iterate over earthquakes, adding them as marker to markers
 	    for (PointFeature earthquake : earthquakes) {
 	    	markers.add(createMarker(earthquake));
 	    }
 	    
+	    // Add markers to map
 	    map.addMarkers(markers);
 	}
 		
@@ -99,8 +103,28 @@ public class EarthquakeCityMap extends PApplet {
 	// TODO: Implement this method and call it from setUp, if it helps
 	private SimplePointMarker createMarker(PointFeature feature)
 	{
-		// finish implementing and use this method, if it helps.
-		return new SimplePointMarker(feature.getLocation());
+		// Create SimplePointMarker on feature's location
+		SimplePointMarker spm = new SimplePointMarker(feature.getLocation());
+		
+		// Get magnitude of earthquake
+		Object magObj = feature.getProperty("magnitude");
+    	float mag = Float.parseFloat(magObj.toString());
+    	
+    	// Check magnitude and assign color and radius accordingly
+    	if (mag >= 5.0) {
+    		spm.setColor(red);
+    		spm.setRadius(15);
+    	}
+    	else if (mag >= 4.0) {
+    		spm.setColor(yellow);
+    		spm.setRadius(10);
+    	}
+    	else {
+    		spm.setColor(blue);
+    		spm.setRadius(5);
+    	}
+    	
+		return spm;
 	}
 	
 	public void draw() {
