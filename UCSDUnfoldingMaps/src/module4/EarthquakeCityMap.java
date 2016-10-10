@@ -3,6 +3,10 @@ package module4;
 import java.util.ArrayList;
 import java.util.List;
 
+// import Map & Hashmap
+import java.util.Map;
+import java.util.HashMap;
+
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.data.Feature;
 import de.fhpotsdam.unfolding.data.GeoJSONReader;
@@ -181,10 +185,42 @@ public class EarthquakeCityMap extends PApplet {
 	// And LandQuakeMarkers have a "country" property set.
 	private void printQuakes() 
 	{
-		// TODO: Implement this method
+		// Create map for locations and nrEarthquakes
+		Map<String, Integer> locationMap = new HashMap<>();
+		
+		// Add Ocean to Map
+		locationMap.put("Ocean" , 0);
+		
+		// Add countries to map
+		for (Marker countryMarker : countryMarkers) {
+			locationMap.put(countryMarker.getStringProperty("name"), 0);
+		}
+		
+		// Iterate over quakeMarkers
+		for (Marker quakeMarker : quakeMarkers) {
+			
+			// Check if quakeMarker is in ocean
+			if (quakeMarker instanceof OceanQuakeMarker) {
+				// Increment Ocean value
+				locationMap.put("Ocean", locationMap.get("Ocean") + 1);
+			}
+			// Check if quakeMarker matches a key location in locationMap
+			else if (locationMap.containsKey(quakeMarker.getStringProperty("country"))) {
+				// Increment location value
+				locationMap.put(quakeMarker.getStringProperty("country"), locationMap.get(quakeMarker.getStringProperty("country")) + 1);
+			}
+		}
+		
+		// Iterate over entries in locationMap
+		for (Map.Entry<String, Integer> location : locationMap.entrySet())
+		{
+			// Check if value of location is 1 or more
+		    if (location.getValue() > 0) {
+		    	// Print key location and value
+		    	System.out.println(location.getKey() + ":" + location.getValue());
+		    }
+		}
 	}
-	
-	
 	
 	// helper method to test whether a given earthquake is in a given country
 	// This will also add the country property to the properties of the earthquake 
