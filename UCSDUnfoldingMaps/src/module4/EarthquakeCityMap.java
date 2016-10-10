@@ -3,6 +3,10 @@ package module4;
 import java.util.ArrayList;
 import java.util.List;
 
+// import Map & TreeMap
+import java.util.Map;
+import java.util.TreeMap;
+
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.data.Feature;
 import de.fhpotsdam.unfolding.data.GeoJSONReader;
@@ -76,8 +80,8 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
-		//earthquakesURL = "test1.atom";
-		//earthquakesURL = "test2.atom";
+		// earthquakesURL = "test1.atom";
+		// earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
 		//earthquakesURL = "quiz1.atom";
@@ -141,20 +145,38 @@ public class EarthquakeCityMap extends PApplet {
 		textSize(12);
 		text("Earthquake Key", 50, 75);
 		
+		// City Markers
 		fill(color(255, 0, 0));
-		ellipse(50, 125, 15, 15);
-		fill(color(255, 255, 0));
-		ellipse(50, 175, 10, 10);
-		fill(color(0, 0, 255));
-		ellipse(50, 225, 5, 5);
-		
+		triangle(50, 125, 45, 135, 55, 135);
 		fill(0, 0, 0);
-		text("5.0+ Magnitude", 75, 125);
-		text("4.0+ Magnitude", 75, 175);
-		text("Below 4.0", 75, 225);
-	}
+		text("City Marker", 75, 125);
 
-	
+		// Quake Markers
+		fill(color(255, 255, 255));
+		ellipse(50, 150, 15, 15);
+		fill(0, 0, 0);
+		text("Land Quake", 75, 150);
+		fill(color(255, 255, 255));
+		rect(42, 165, 15, 15);
+		fill(0, 0, 0);
+		text("Ocean Quake", 75, 170);
+		fill(0,0,0);
+		text("Size ~ Magnitude", 50, 190);
+		
+		// Depth Colors
+		fill(color(255, 255, 0));
+		ellipse(50, 210, 15, 15);
+		fill(0, 0, 0);
+		text("Shallow", 75, 210);
+		fill(color(0, 0, 255));
+		ellipse(50, 230, 15, 15);
+		fill(0, 0, 0);
+		text("Intermediate", 75, 230);
+		fill(color(255, 0, 0));
+		ellipse(50, 250, 15, 15);
+		fill(0, 0, 0);
+		text("Intermediate", 75, 250);
+	}
 	
 	// Checks whether this quake occurred on land.  If it did, it sets the 
 	// "country" property of its PointFeature to the country where it occurred
@@ -162,9 +184,12 @@ public class EarthquakeCityMap extends PApplet {
 	// set this "country" property already.  Otherwise it returns false.
 	private boolean isLand(PointFeature earthquake) {
 		
-		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
-		
-		// TODO: Implement this method using the helper method isInCountry
+		// Loop over all countries to check if location is in any of them
+		for (Marker country : countryMarkers) {
+			if (isInCountry(earthquake, country)) {
+				return true;
+			}
+		}
 		
 		// not inside any country
 		return false;
@@ -178,10 +203,45 @@ public class EarthquakeCityMap extends PApplet {
 	// And LandQuakeMarkers have a "country" property set.
 	private void printQuakes() 
 	{
-		// TODO: Implement this method
+		// Create map for locations and nrEarthquakes
+		Map<String, Integer> locationMap = new TreeMap<>();
+		
+		// Add Ocean to Map
+		locationMap.put("Ocean" , 0);
+		
+		// Add countries to map
+		for (Marker countryMarker : countryMarkers) {
+			locationMap.put(countryMarker.getStringProperty("name"), 0);
+		}
+		
+		// Iterate over quakeMarkers
+		for (Marker quakeMarker : quakeMarkers) {
+			
+			// Check if quakeMarker is in ocean
+			if (quakeMarker instanceof OceanQuakeMarker) {
+				// Increment Ocean value
+				locationMap.put("Ocean", locationMap.get("Ocean") + 1);
+			}
+			// Check if quakeMarker matches a key location in locationMap
+			else if (locationMap.containsKey(quakeMarker.getStringProperty("country"))) {
+				// Increment location value
+				locationMap.put(quakeMarker.getStringProperty("country"), locationMap.get(quakeMarker.getStringProperty("country")) + 1);
+			}
+		}
+		
+		// Iterate over entries in locationMap
+		for (Map.Entry<String, Integer> location : locationMap.entrySet())
+		{
+			// Check if value of location is 1 or more and not Ocean
+		    if (location.getValue() > 0 && location.getKey() != "Ocean") {
+		    	// Print key location and value
+		    	System.out.println(location.getKey() + ": " + location.getValue());
+		    }
+		}
+		
+		// Print Ocean location quakes
+		System.out.println("OCEAN QUAKES: " + locationMap.get("Ocean"));
 	}
-	
-	
 	
 	// helper method to test whether a given earthquake is in a given country
 	// This will also add the country property to the properties of the earthquake 
