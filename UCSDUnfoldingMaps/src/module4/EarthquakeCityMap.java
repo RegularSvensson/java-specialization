@@ -153,7 +153,7 @@ public class EarthquakeCityMap extends PApplet {
 
 		// Quake Markers
 		fill(color(255, 255, 255));
-		ellipse(50, 150, 15,15);
+		ellipse(50, 150, 15, 15);
 		fill(0, 0, 0);
 		text("Land Quake", 75, 150);
 		fill(color(255, 255, 255));
@@ -162,6 +162,20 @@ public class EarthquakeCityMap extends PApplet {
 		text("Ocean Quake", 75, 170);
 		fill(0,0,0);
 		text("Size ~ Magnitude", 50, 190);
+		
+		// Depth Colors
+		fill(color(255, 255, 0));
+		ellipse(50, 210, 15, 15);
+		fill(0, 0, 0);
+		text("Shallow", 75, 210);
+		fill(color(0, 0, 255));
+		ellipse(50, 230, 15, 15);
+		fill(0, 0, 0);
+		text("Intermediate", 75, 230);
+		fill(color(255, 0, 0));
+		ellipse(50, 250, 15, 15);
+		fill(0, 0, 0);
+		text("Intermediate", 75, 250);
 	}
 	
 	// Checks whether this quake occurred on land.  If it did, it sets the 
