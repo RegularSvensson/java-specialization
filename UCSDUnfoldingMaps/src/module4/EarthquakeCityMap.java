@@ -150,6 +150,18 @@ public class EarthquakeCityMap extends PApplet {
 		triangle(50, 125, 45, 135, 55, 135);
 		fill(0, 0, 0);
 		text("City Marker", 75, 125);
+
+		// Quake Markers
+		fill(color(255, 255, 255));
+		ellipse(50, 150, 15,15);
+		fill(0, 0, 0);
+		text("Land Quake", 75, 150);
+		fill(color(255, 255, 255));
+		rect(42, 165, 15, 15);
+		fill(0, 0, 0);
+		text("Ocean Quake", 75, 170);
+		fill(0,0,0);
+		text("Size ~ Magnitude", 50, 190);
 	}
 	
 	// Checks whether this quake occurred on land.  If it did, it sets the 
