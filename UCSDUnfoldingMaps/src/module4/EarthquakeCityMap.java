@@ -3,9 +3,9 @@ package module4;
 import java.util.ArrayList;
 import java.util.List;
 
-// import Map & Hashmap
+// import Map & TreeMap
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.data.Feature;
@@ -80,8 +80,8 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
-		//earthquakesURL = "test1.atom";
-		//earthquakesURL = "test2.atom";
+		// earthquakesURL = "test1.atom";
+		// earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
 		//earthquakesURL = "quiz1.atom";
@@ -186,7 +186,7 @@ public class EarthquakeCityMap extends PApplet {
 	private void printQuakes() 
 	{
 		// Create map for locations and nrEarthquakes
-		Map<String, Integer> locationMap = new HashMap<>();
+		Map<String, Integer> locationMap = new TreeMap<>();
 		
 		// Add Ocean to Map
 		locationMap.put("Ocean" , 0);
@@ -214,12 +214,15 @@ public class EarthquakeCityMap extends PApplet {
 		// Iterate over entries in locationMap
 		for (Map.Entry<String, Integer> location : locationMap.entrySet())
 		{
-			// Check if value of location is 1 or more
-		    if (location.getValue() > 0) {
+			// Check if value of location is 1 or more and not Ocean
+		    if (location.getValue() > 0 && location.getKey() != "Ocean") {
 		    	// Print key location and value
-		    	System.out.println(location.getKey() + ":" + location.getValue());
+		    	System.out.println(location.getKey() + ": " + location.getValue());
 		    }
 		}
+		
+		// Print Ocean location quakes
+		System.out.println("OCEAN QUAKES: " + locationMap.get("Ocean"));
 	}
 	
 	// helper method to test whether a given earthquake is in a given country
