@@ -145,7 +145,29 @@ public class EarthquakeCityMap extends PApplet {
 	// 
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
-		// TODO: Implement this method
+		// Check if a marker is already selected
+		if (lastSelected != null) {
+			// Abort
+			return;
+		}
+		
+		// Loop over markers
+		for (Marker marker : markers) {
+			// Cast marker as CommonMarker to get access to methods
+			CommonMarker commonMarker = (CommonMarker) marker;
+			
+			// Check if location is inside commonMarker
+			if (commonMarker.isInside(map, mouseX, mouseY)) {
+				// Update lastSelected marker to this marker
+				lastSelected = commonMarker;
+				
+				// Set marker to selected
+				commonMarker.setSelected(true);
+				
+				// Abort loop
+				return;
+			}
+		}
 	}
 	
 	/** The event handler for mouse clicks
