@@ -145,7 +145,29 @@ public class EarthquakeCityMap extends PApplet {
 	// 
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
-		// TODO: Implement this method
+		// Check if a marker is already selected
+		if (lastSelected != null) {
+			// Abort
+			return;
+		}
+		
+		// Loop over markers
+		for (Marker marker : markers) {
+			// Cast marker as CommonMarker to get access to methods
+			CommonMarker commonMarker = (CommonMarker) marker;
+			
+			// Check if location is inside commonMarker
+			if (commonMarker.isInside(map, mouseX, mouseY)) {
+				// Update lastSelected marker to this marker
+				lastSelected = commonMarker;
+				
+				// Set marker to selected
+				commonMarker.setSelected(true);
+				
+				// Abort loop
+				return;
+			}
+		}
 	}
 	
 	/** The event handler for mouse clicks
@@ -156,20 +178,118 @@ public class EarthquakeCityMap extends PApplet {
 	@Override
 	public void mouseClicked()
 	{
-		// TODO: Implement this method
-		// Hint: You probably want a helper method or two to keep this code
-		// from getting too long/disorganized
+		// Check if last click was on a marker
+		if (lastClicked != null) {
+			
+			// Toggle to show all markers
+			hideMarkers(false);
+			
+			// Remove selection of marker
+			lastClicked = null;
+		}
+		// Else last click was not on a marker
+		else {
+			// Toggle to hide all markers
+			hideMarkers(true);
+			
+			// Check earthquakes for click
+			checkEarthquakeClick();
+			
+			// Check if there was still no found marker clicked
+			if (lastClicked == null) {
+				// Check cities for click
+				checkCityClick();
+			}
+		}
 	}
 	
 	
-	// loop over and unhide all markers
-	private void unhideMarkers() {
+	// Loop over and toggle all markers
+	private void hideMarkers(boolean state) {
 		for(Marker marker : quakeMarkers) {
-			marker.setHidden(false);
+			marker.setHidden(state);
 		}
 			
 		for(Marker marker : cityMarkers) {
-			marker.setHidden(false);
+			marker.setHidden(state);
+		}
+	}
+	
+	/**
+	 * Loops over earthquakes to check if they were clicked, 
+	 * then show or hide relevant marker(s).
+	 */
+	private void checkEarthquakeClick() {
+		
+		// Loop over quakeMarkers
+		for (Marker quakeMarker : quakeMarkers) {
+			
+			// Check if quakeMarker was clicked
+			if (quakeMarker.isInside(map, mouseX, mouseY)) {
+				
+				// Select quakeMarker on map
+				quakeMarker.setSelected(true);
+				
+				// Update lastClicked to quakeMarker
+				lastClicked = (CommonMarker) quakeMarker;
+				
+				// Show quakeMarker on map
+				quakeMarker.setHidden(false);
+				
+				// Create EarthquakeMarker from quakeMarker
+				EarthquakeMarker earthquakeMarker = (EarthquakeMarker) quakeMarker;
+				
+				// Loop over cityMarkers
+				for (Marker cityMarker : cityMarkers) {
+					
+					// Check if distance to cityMarker is within threat circle of earthquakeMarker
+					if (cityMarker.getDistanceTo(earthquakeMarker.getLocation()) <=
+							earthquakeMarker.threatCircle()) {
+						
+						// Show cityMarker on map
+						cityMarker.setHidden(false);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Loops over cities to check if they were clicked, 
+	 * then show or hide relevant marker(s).
+	 */
+	private void checkCityClick() {
+		
+		// Loop over cityMarkers
+		for (Marker cityMarker : cityMarkers) {
+			
+			// Check if cityMarker was clicked
+			if (cityMarker.isInside(map, mouseX, mouseY)) {
+				
+				// Select cityMarker on map
+				cityMarker.setSelected(true);
+				
+				// Update lastClicked to cityMarker
+				lastClicked = (CommonMarker) cityMarker;
+				
+				// Show cityMarker on map
+				cityMarker.setHidden(false);
+				
+				// Loop over quakeMarkers
+				for (Marker quakeMarker : quakeMarkers) {
+					
+					// Create EarthquakeMarker from quakeMarker
+					EarthquakeMarker earthquakeMarker = (EarthquakeMarker) quakeMarker;
+					
+					// Check if distance to cityMarker is within threat circle of earthquakeMarker
+					if (cityMarker.getDistanceTo(earthquakeMarker.getLocation()) <=
+							earthquakeMarker.threatCircle()) {
+						
+						// Show quakeMarker on map
+						quakeMarker.setHidden(false);
+					}
+				}
+			}
 		}
 	}
 	
