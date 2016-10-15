@@ -60,11 +60,13 @@ public abstract class EarthquakeMarker extends CommonMarker implements Comparabl
 	 * is of same magnitude.
 	 */
 	public int compareTo(EarthquakeMarker marker) {
-		
-		// Cast as int, calculate difference in magnitude, multiply
-		// by 100 to get a whole number from decimal difference
-		return (int) (this.getMagnitude() - marker.getMagnitude()) * 100;
-	}
+        if (this.getMagnitude() > marker.getMagnitude())
+            return -1;
+        else if (this.getMagnitude()< marker.getMagnitude())
+            return 1;
+        else
+            return 0;
+    }
 	
 	// calls abstract method drawEarthquake and then checks age and draws X if needed
 	@Override
