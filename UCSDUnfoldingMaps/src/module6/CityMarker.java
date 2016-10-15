@@ -15,6 +15,12 @@ public class CityMarker extends CommonMarker {
 	
 	public static int TRI_SIZE = 5;  // The size of the triangle marker
 	
+	/** Greater than or equal to this threshold is a large sized city */
+	public static final float THRESHOLD_LARGE = 5;
+	
+	/** Greater than or equal to this threshold is a medium sized city */
+	public static final float THRESHOLD_MEDIUM = 1;
+	
 	public CityMarker(Location location) {
 		super(location);
 	}
@@ -42,8 +48,9 @@ public class CityMarker extends CommonMarker {
 		// Save previous drawing style
 		pg.pushStyle();
 		
-		// IMPLEMENT: drawing triangle for each city
-		pg.fill(150, 30, 30);
+		// Select color depending on population size
+		colorDetermine(pg);
+		
 		pg.triangle(x, y-TRI_SIZE, x-TRI_SIZE, y+TRI_SIZE, x+TRI_SIZE, y+TRI_SIZE);
 		
 		// Restore previous drawing style
@@ -68,6 +75,25 @@ public class CityMarker extends CommonMarker {
 		pg.text(pop, x+3, y - TRI_SIZE -18);
 		
 		pg.popStyle();
+	}
+	
+	/** 
+	 * Determine color for city according to size.
+	 * Large = Red, Medium = Blue, Small = Yellow.
+	 * @param pg
+	 */
+	private void colorDetermine(PGraphics pg) {
+		float population = getPopulation();
+		
+		if (population < THRESHOLD_MEDIUM) {
+			pg.fill(255, 255, 0);
+		}
+		else if (population < THRESHOLD_LARGE) {
+			pg.fill(0, 0, 255);
+		}
+		else {
+			pg.fill(255, 0, 0);
+		}
 	}
 	
 	private String getCity()

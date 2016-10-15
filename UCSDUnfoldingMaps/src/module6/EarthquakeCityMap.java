@@ -2,6 +2,7 @@ package module6;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
@@ -116,7 +117,9 @@ public class EarthquakeCityMap extends PApplet {
 	    }
 
 	    // could be used for debugging
-	    printQuakes();
+	    // printQuakes();
+	    // Call sortAndPrint to test
+	    // sortAndPrint(20);
 	 		
 	    // (3) Add markers to map
 	    //     NOTE: Country markers are not added to the map.  They are used
@@ -125,6 +128,7 @@ public class EarthquakeCityMap extends PApplet {
 	    map.addMarkers(cityMarkers);
 	    
 	    
+
 	}  // End setup
 	
 	
@@ -136,9 +140,23 @@ public class EarthquakeCityMap extends PApplet {
 	}
 	
 	
-	// TODO: Add the method:
-	//   private void sortAndPrint(int numToPrint)
-	// and then call that method from setUp
+	/**
+	 * Sorts and prints a number of earthquakes 
+	 * in reverse order of magnitude.
+	 */
+	private void sortAndPrint(int numToPrint) {
+		
+		// Create array of earthquakes from quakeMarkers
+		Object[] earthquakes = quakeMarkers.toArray();
+		
+		// Sort earthquakes according to EarthquakeMarker's compareTo()
+		Arrays.sort(earthquakes);
+		
+		// Print numToPrint number of earthquakes
+		for (int i = 0; i < numToPrint; i++) {
+			System.out.println(earthquakes[i]);
+		}
+	}
 	
 	/** Event handler that gets called automatically when the 
 	 * mouse moves.
@@ -270,14 +288,14 @@ public class EarthquakeCityMap extends PApplet {
 		int xbase = 25;
 		int ybase = 50;
 		
-		rect(xbase, ybase, 150, 250);
+		rect(xbase, ybase, 150, 300);
 		
 		fill(0);
 		textAlign(LEFT, CENTER);
 		textSize(12);
 		text("Earthquake Key", xbase+25, ybase+25);
 		
-		fill(150, 30, 30);
+		fill(255, 255, 255);
 		int tri_xbase = xbase + 35;
 		int tri_ybase = ybase + 50;
 		triangle(tri_xbase, tri_ybase-CityMarker.TRI_SIZE, tri_xbase-CityMarker.TRI_SIZE, 
@@ -322,6 +340,26 @@ public class EarthquakeCityMap extends PApplet {
 		strokeWeight(2);
 		line(centerx-8, centery-8, centerx+8, centery+8);
 		line(centerx-8, centery+8, centerx+8, centery-8);
+		
+		
+		// Draw city color key
+		fill(0, 0, 0);
+		textAlign(LEFT, CENTER);
+		text("Small", xbase+50, ybase+220);
+		text("Medium", xbase+50, ybase+240);
+		text("Large", xbase+50, ybase+260);
+		fill(255, 255, 0);
+		triangle(tri_xbase, tri_ybase-CityMarker.TRI_SIZE + 170, tri_xbase-CityMarker.TRI_SIZE, 
+				tri_ybase+CityMarker.TRI_SIZE + 170, tri_xbase+CityMarker.TRI_SIZE, 
+				tri_ybase+CityMarker.TRI_SIZE + 170);
+		fill(0, 0, 255);
+		triangle(tri_xbase, tri_ybase-CityMarker.TRI_SIZE + 190, tri_xbase-CityMarker.TRI_SIZE, 
+				tri_ybase+CityMarker.TRI_SIZE + 190, tri_xbase+CityMarker.TRI_SIZE, 
+				tri_ybase+CityMarker.TRI_SIZE + 190);
+		fill(255, 0, 0);
+		triangle(tri_xbase, tri_ybase-CityMarker.TRI_SIZE + 210, tri_xbase-CityMarker.TRI_SIZE, 
+				tri_ybase+CityMarker.TRI_SIZE + 210, tri_xbase+CityMarker.TRI_SIZE, 
+				tri_ybase+CityMarker.TRI_SIZE + 210);
 		
 		
 	}
