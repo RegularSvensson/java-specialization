@@ -34,9 +34,8 @@ public class BasicDocument extends Document
 	@Override
 	public int getNumWords()
 	{
-		//TODO: Implement this method in week 2 according to the comments above.  
-		// See the Module 2 support videos if you need help.
-	    return 0;
+		List<String> numWords = getTokens("[a-zA-Z]+");
+	    return numWords.size();
 	}
 	
 	/**
@@ -54,9 +53,8 @@ public class BasicDocument extends Document
 	@Override
 	public int getNumSentences()
 	{
-	    //TODO: Implement this method.  See the Module 2 support videos 
-        // if you need help.
-        return 0;
+		List<String> numSentences = getTokens("[^?.!]+");
+        return numSentences.size();
 	}
 	
 	/**
@@ -76,12 +74,14 @@ public class BasicDocument extends Document
 	@Override
 	public int getNumSyllables()
 	{
-	    //TODO: Implement this method in week 2.  See the Module 2 support videos 
-        // if you need help.  And note that there is no need to use a regular
-		// expression for the syllable counting.  We recommend you implement 
-		// the helper function countSyllables in Document.java using a loop, 
-		// and then call it here on each word.
-        return 0;
+		// Credit: class notes
+		List<String> tokens = getTokens("[a-zA-Z]+");
+		int totalSyllables = 0;
+		for (String word : tokens)
+		{
+			totalSyllables += countSyllables(word);
+		}
+		return totalSyllables;
 	}
 	
 	
