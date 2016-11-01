@@ -48,12 +48,23 @@ public class EfficientDocument extends Document {
 		// Call getTokens on the text to preserve separate strings that are 
 		// either words or sentence-ending punctuation.  Ignore everything
 		// That is not a word or a sentence-ending puctuation.
-		// MAKE SURE YOU UNDERSTAND THIS LINE BEFORE YOU CODE THE REST
-		// OF THIS METHOD.
 		List<String> tokens = getTokens("[!?.]+|[a-zA-Z]+");
 		
-		// TODO: Finish this method.  Remember the countSyllables method from 
-		// Document.  That will come in handy here.  isWord defined above will also help.
+		// loop over tokens
+		for (String token : tokens) {
+			
+			// check if token is word
+			if (isWord(token)) {
+				numWords++;
+				
+				// count syllables of token and update numSyllables
+				numSyllables += countSyllables(token);
+			}
+			// check if token is not a word or is last token in text
+			if (!isWord(token) || token == tokens.get(tokens.size() - 1)){
+				numSentences++;
+			}
+		}
 	}
 
 	
@@ -72,8 +83,7 @@ public class EfficientDocument extends Document {
 	 */
 	@Override
 	public int getNumSentences() {
-		//TODO: write this method.  Hint: It's simple
-		return 0;
+		return numSentences;
 	}
 
 	
@@ -93,8 +103,7 @@ public class EfficientDocument extends Document {
 	 */
 	@Override
 	public int getNumWords() {
-		//TODO: write this method.  Hint: It's simple
-	    return 0;
+	    return numWords;
 	}
 
 
@@ -115,8 +124,7 @@ public class EfficientDocument extends Document {
 	 */
 	@Override
 	public int getNumSyllables() {
-        //TODO: write this method.  Hint: It's simple
-        return 0;
+        return numSyllables;
 	}
 	
 	// Can be used for testing
