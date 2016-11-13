@@ -16,7 +16,15 @@ public class MyLinkedList<E> extends AbstractList<E> {
 
 	/** Create a new empty LinkedList */
 	public MyLinkedList() {
-		// TODO: Implement this method
+		size = 0;
+		
+		// initialize sentinel nodes
+		head = new LLNode<E>(null);
+		tail = new LLNode<E>(null);
+		
+		// set pointers
+		head.next = tail;
+		tail.prev = head;
 	}
 
 	/**
@@ -33,8 +41,14 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	 * @throws IndexOutOfBoundsException if the index is out of bounds. */
 	public E get(int index) 
 	{
-		// TODO: Implement this method.
-		return null;
+		// check for exception
+		if (index >= size || index < 0)
+		{
+			throw new IndexOutOfBoundsException();
+		}
+		
+		// call helper method to return element at position index
+		return getNode(index).data;
 	}
 
 	/**
@@ -78,7 +92,26 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	{
 		// TODO: Implement this method
 		return null;
-	}   
+	}
+	
+	/** 
+	 * Get a node at index.
+	 * @param index The index of an element to get
+	 * @return The node to get
+	 */
+	private LLNode<E> getNode(int index) 
+	{
+		LLNode<E> node = head;
+		
+		// iterate over linked list counting head sentinel node
+		// as index + 1
+		for (int i = 0; i < index + 1; i++) 
+		{
+			node = node.next;
+		}
+		
+		return node;
+	}
 }
 
 class LLNode<E> 
