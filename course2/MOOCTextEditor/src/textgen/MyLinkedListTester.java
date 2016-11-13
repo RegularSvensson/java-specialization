@@ -28,7 +28,6 @@ public class MyLinkedListTester {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		// Feel free to use these lists, or add your own
 	    shortList = new MyLinkedList<String>();
 		shortList.add("A");
 		shortList.add("B");
@@ -42,7 +41,6 @@ public class MyLinkedListTester {
 		list1.add(65);
 		list1.add(21);
 		list1.add(42);
-		
 	}
 
 	
@@ -53,7 +51,7 @@ public class MyLinkedListTester {
 	@Test
 	public void testGet()
 	{
-		//test empty list, get should throw an exception
+		// test empty list, get should throw an exception
 		try {
 			emptyList.get(0);
 			fail("Check out of bounds");
@@ -103,9 +101,9 @@ public class MyLinkedListTester {
 	}
 	
 	
-	/** Test removing an element from the list.
-	 * We've included the example from the concept challenge.
-	 * You will want to add more tests.  */
+	/** 
+	 * Test removing an element from the list. 
+	 */
 	@Test
 	public void testRemove()
 	{
@@ -216,11 +214,20 @@ public class MyLinkedListTester {
 	@Test
 	public void testSet()
 	{
-	    // TODO: implement this test
-	    
+		// try to set numbers out of bounds
+		try 
+		{
+			emptyList.set(0,0);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) 
+		{
+		
+		}
+		
+		// assert that set() method works
+		Integer old = list1.set(0, 10);
+		assertEquals("Old Item is ",(Integer) 65, old);
+		assertEquals("New Item is ",(Integer) 10, list1.get(0));
 	}
-	
-	
-	// TODO: Optionally add more test methods.
-	
 }
