@@ -148,8 +148,35 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddAtIndex()
 	{
-        // TODO: implement this test
+        // try to add numbers to emptyList out of bounds
+		try
+		{
+			emptyList.add(2, 0);
+			fail("Check out of bounds.");
+		}
+		catch (IndexOutOfBoundsException e)
+		{
+			
+		}
+		try
+		{
+			emptyList.add(-1, 0);
+			fail("Check out of bounds.");
+		}
+		catch (IndexOutOfBoundsException e)
+		{
+			
+		}
 		
+		// add numbers to emptyList
+		emptyList.add(0, 1);
+		emptyList.add(1, 2);
+		emptyList.add(2, 3);
+		
+		// assert correct numbers added to emptyList
+		assertEquals("Item at first is ", (Integer) 1, emptyList.get(0));
+		assertEquals("Item at first is ", (Integer) 2, emptyList.get(1));
+		assertEquals("Item at first is ", (Integer) 3, emptyList.get(2));
 	}
 	
 	/** Test setting an element in the list */
