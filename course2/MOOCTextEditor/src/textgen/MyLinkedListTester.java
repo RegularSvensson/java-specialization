@@ -166,7 +166,10 @@ public class MyLinkedListTester {
 	@Test
 	public void testSize()
 	{
-		// TODO: implement this test
+		// assert that size method works
+		Integer size = list1.size;
+		assertEquals("Size of list is ", (Integer) 3, size);
+		assertEquals("Size of empty list is ", (Integer) 0, (Integer) emptyList.size);
 	}
 
 	
