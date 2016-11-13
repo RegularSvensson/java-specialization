@@ -33,8 +33,9 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	 */
 	public boolean add(E element ) 
 	{
-		// TODO: Implement this method
-		return false;
+		// call general add method using size to refer to end of list
+		add(size, element);
+		return true;
 	}
 
 	/** Get the element at position index 
@@ -55,12 +56,33 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	 * Add an element to the list at the specified index
 	 * @param The index where the element should be added
 	 * @param element The element to add
+	 * @throws IndexOutOfBoundsException if the index is out of bounds
+	 * @throws NullPointerException if element is null
 	 */
 	public void add(int index, E element ) 
 	{
-		// TODO: Implement this method
+		// check for exceptions
+		if (index >= size || index < 0)
+		{
+			throw new IndexOutOfBoundsException();
+		}
+		if (element == null)
+		{
+			throw new NullPointerException();
+		}
+		
+		// create nodes
+		LLNode<E> previousNode = (index == 0) ? head : getNode(index - 1);
+		LLNode<E> nextNode = (size == index) ? tail : getNode(index);
+		LLNode<E> newNode = new LLNode<E>(element, nextNode, previousNode);
+		
+		// update node pointers
+		previousNode.next = newNode;
+		nextNode.prev = newNode;
+		
+		// increment linked list size
+		size++;
 	}
-
 
 	/** Return the size of the list */
 	public int size() 
