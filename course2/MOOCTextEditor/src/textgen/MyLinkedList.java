@@ -126,8 +126,21 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	 */
 	public E set(int index, E element) 
 	{
-		// TODO: Implement this method
-		return null;
+		// check for exceptions
+		if (index >= size || index < 0 )
+		{
+			throw new IndexOutOfBoundsException(); 
+		}
+		if (element == null)
+		{
+			throw new NullPointerException();
+		}
+		
+		// update node element
+		E oldData = this.getNode(index).data;
+		this.getNode(index).data = element;
+		
+		return oldData;
 	}
 	
 	/** 
