@@ -123,8 +123,12 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddEnd()
 	{
-        // TODO: implement this test
+		// assert that add method returns true
+        boolean added = list1.add(10);
+		assertTrue(added);
 		
+		// assert that last element in linked list equals added element
+		assertEquals("Add: check add is correct ", (Integer) 10, list1.get(list1.size() - 1));
 	}
 
 	
