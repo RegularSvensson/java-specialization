@@ -62,7 +62,7 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public void add(int index, E element ) 
 	{
 		// check for exceptions
-		if (index >= size || index < 0)
+		if (index > size || index < 0)
 		{
 			throw new IndexOutOfBoundsException();
 		}
