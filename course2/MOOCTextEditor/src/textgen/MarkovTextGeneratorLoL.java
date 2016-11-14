@@ -128,10 +128,16 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	@Override
 	public void retrain(String sourceText)
 	{
-		// TODO: Implement this method.
+		// reset starter
+		starter = "";
+		
+		// clear wordList
+		wordList.clear();
+		
+		// call train method on sourceText
+		train(sourceText);
 	}
 	
-	// TODO: Add any private helper methods you need here.
 	/**
 	 * Returns a ListNode if found in wordList that matches word,
 	 * else returns null.
@@ -163,7 +169,7 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 		gen.train(textString);
 		System.out.println(gen);
 		System.out.println(gen.generateText(20));
-		/* String textString2 = "You say yes, I say no, "+
+		String textString2 = "You say yes, I say no, "+
 				"You say stop, and I say go, go, go, "+
 				"Oh no. You say goodbye and I say hello, hello, hello, "+
 				"I don't know why you say goodbye, I say hello, hello, hello, "+
@@ -192,7 +198,6 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 		gen.retrain(textString2);
 		System.out.println(gen);
 		System.out.println(gen.generateText(20));
-		*/
 	}
 
 }
