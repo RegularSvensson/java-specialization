@@ -31,8 +31,45 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	/** Train the generator by adding the sourceText */
 	@Override
 	public void train(String sourceText)
-	{
-		// TODO: Implement this method
+	{	
+		// create array of words from sourceText
+		String[] words = sourceText.split("[\\s]+");
+		
+		// set "starter" to be the first word in the text
+		starter = words[0];
+		
+		// set "prevWord" to be starter
+		String prevWord = starter;
+		
+		// for each word "w" in the source text starting at the second word
+		for (int i = 1; i < words.length; i++) {
+			String w = words[i];
+			
+			// check to see if "prevWord" is already a node in the list
+			if (wordList.contains(findNode(prevWord))) {
+				// if "prevWord" is a node in the list
+				// add "w" as a nextWord to the "prevWord" node
+				findNode(prevWord).addNextWord(w);
+			}
+			else {
+				// else add a node to the list with "prevWord" as the node's word
+				// add "w" as a nextWord to the "prevWord" node
+                ListNode node = new ListNode(prevWord);
+                node.addNextWord(w);
+                wordList.add(node);
+			}
+			// set "prevWord" = "w"
+			prevWord = w;
+		}
+		// add starter to be a next word for the last word in the source text.
+		if (wordList.contains(findNode(prevWord))) {
+			findNode(prevWord).addNextWord(starter);
+		} 
+		else {
+            ListNode node = new ListNode(prevWord);
+            node.addNextWord(starter);
+            wordList.add(node);
+		}
 	}
 	
 	/** 
@@ -65,6 +102,20 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	}
 	
 	// TODO: Add any private helper methods you need here.
+	/**
+	 * Returns a ListNode if found in wordList that matches word,
+	 * else returns null.
+	 * @param prevWord
+	 * @return node if found or null if not found
+	 */
+    private ListNode findNode (String word) {
+        for (ListNode node : wordList){
+            if (node.getWord().equals(word)) {
+                return node;
+            }
+        }
+        return null;
+    }
 	
 	
 	/**
@@ -76,7 +127,8 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	{
 		// feed the generator a fixed random value for repeatable behavior
 		MarkovTextGeneratorLoL gen = new MarkovTextGeneratorLoL(new Random(42));
-		String textString = "Hello.  Hello there.  This is a test.  Hello there.  Hello Bob.  Test again.";
+		// String textString = "Hello.  Hello there.  This is a test.  Hello there.  Hello Bob.  Test again.";
+		String textString = "hi there hi Leo";
 		System.out.println(textString);
 		gen.train(textString);
 		System.out.println(gen);
