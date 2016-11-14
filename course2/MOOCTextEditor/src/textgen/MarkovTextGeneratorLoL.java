@@ -76,11 +76,41 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	 * Generate the number of words requested.
 	 */
 	@Override
-	public String generateText(int numWords) {
-	    // TODO: Implement this method
-		return null;
+	public String generateText(int numWords) {		
+		// check if generator has not been trained or
+		// numWords is zero
+		if (wordList.isEmpty() || numWords == 0) {
+			return "";
+		}
+		
+		// set "currWord" to be the starter word
+		String currWord = starter;
+		
+		// add "currWord" to output
+		String output = currWord;
+		
+		// increment numWords left
+		int wordsAdded = 1;
+		
+		// while you need more words
+		while (wordsAdded < numWords) {
+			// find the "node" corresponding to "currWord" in the list
+			ListNode node = findNode(currWord);
+			
+			// select a random word "w" from the "wordList" for "node"
+			String w = node.getRandomNextWord(rnGenerator);
+			
+			// add "w" to the "output"
+			output += " " + w;
+			
+			// set "currWord" to be "w"
+			currWord = w;
+			
+			// increment number of words added to the list
+			wordsAdded++;
+		}
+		return output;
 	}
-	
 	
 	// Can be helpful for debugging
 	@Override
@@ -133,7 +163,7 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 		gen.train(textString);
 		System.out.println(gen);
 		System.out.println(gen.generateText(20));
-		String textString2 = "You say yes, I say no, "+
+		/* String textString2 = "You say yes, I say no, "+
 				"You say stop, and I say go, go, go, "+
 				"Oh no. You say goodbye and I say hello, hello, hello, "+
 				"I don't know why you say goodbye, I say hello, hello, hello, "+
@@ -157,10 +187,12 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 				"I don't know why you say goodbye, I say hello, hello, hello, "+
 				"I don't know why you say goodbye, I say hello, hello, hello, "+
 				"I don't know why you say goodbye, I say hello, hello, hello,";
+		
 		System.out.println(textString2);
 		gen.retrain(textString2);
 		System.out.println(gen);
 		System.out.println(gen.generateText(20));
+		*/
 	}
 
 }
@@ -193,10 +225,9 @@ class ListNode
 	
 	public String getRandomNextWord(Random generator)
 	{
-		// TODO: Implement this method
 	    // The random number generator should be passed from 
 	    // the MarkovTextGeneratorLoL class
-	    return null;
+	    return nextWords.get(generator.nextInt(nextWords.size()));
 	}
 
 	public String toString()
