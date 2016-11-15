@@ -28,7 +28,6 @@ public class MyLinkedListTester {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		// Feel free to use these lists, or add your own
 	    shortList = new MyLinkedList<String>();
 		shortList.add("A");
 		shortList.add("B");
@@ -42,7 +41,6 @@ public class MyLinkedListTester {
 		list1.add(65);
 		list1.add(21);
 		list1.add(42);
-		
 	}
 
 	
@@ -53,7 +51,7 @@ public class MyLinkedListTester {
 	@Test
 	public void testGet()
 	{
-		//test empty list, get should throw an exception
+		// test empty list, get should throw an exception
 		try {
 			emptyList.get(0);
 			fail("Check out of bounds");
@@ -103,18 +101,48 @@ public class MyLinkedListTester {
 	}
 	
 	
-	/** Test removing an element from the list.
-	 * We've included the example from the concept challenge.
-	 * You will want to add more tests.  */
+	/** 
+	 * Test removing an element from the list. 
+	 */
 	@Test
 	public void testRemove()
 	{
+		// try to remove element out of bounds
+		try 
+		{
+			emptyList.remove(0);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) 
+		{
+			
+		}
+		
+		// assert that remove method works
 		int a = list1.remove(0);
 		assertEquals("Remove: check a is correct ", 65, a);
-		assertEquals("Remove: check element 0 is correct ", (Integer)21, list1.get(0));
+		assertEquals("Remove: check element 0 is correct ", (Integer) 21, list1.get(0));
 		assertEquals("Remove: check size is correct ", 2, list1.size());
 		
-		// TODO: Add more tests here
+		// try to remove elements out of bounds
+		try 
+		{
+			emptyList.remove(2);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) 
+		{
+		
+		}
+		try 
+		{
+			emptyList.remove(-1);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) 
+		{
+		
+		}
 	}
 	
 	/** Test adding an element into the end of the list, specifically
@@ -123,8 +151,12 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddEnd()
 	{
-        // TODO: implement this test
+		// assert that add method returns true
+        boolean added = list1.add(10);
+		assertTrue(added);
 		
+		// assert that last element in linked list equals added element
+		assertEquals("Add: check add is correct ", (Integer) 10, list1.get(list1.size() - 1));
 	}
 
 	
@@ -132,7 +164,10 @@ public class MyLinkedListTester {
 	@Test
 	public void testSize()
 	{
-		// TODO: implement this test
+		// assert that size method works
+		Integer size = list1.size;
+		assertEquals("Size of list is ", (Integer) 3, size);
+		assertEquals("Size of empty list is ", (Integer) 0, (Integer) emptyList.size);
 	}
 
 	
@@ -144,19 +179,55 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddAtIndex()
 	{
-        // TODO: implement this test
+        // try to add numbers to emptyList out of bounds
+		try
+		{
+			emptyList.add(2, 0);
+			fail("Check out of bounds.");
+		}
+		catch (IndexOutOfBoundsException e)
+		{
+			
+		}
+		try
+		{
+			emptyList.add(-1, 0);
+			fail("Check out of bounds.");
+		}
+		catch (IndexOutOfBoundsException e)
+		{
+			
+		}
 		
+		// add numbers to emptyList
+		emptyList.add(0, 1);
+		emptyList.add(1, 2);
+		emptyList.add(2, 3);
+		
+		// assert correct numbers added to emptyList
+		assertEquals("Item at first is ", (Integer) 1, emptyList.get(0));
+		assertEquals("Item at first is ", (Integer) 2, emptyList.get(1));
+		assertEquals("Item at first is ", (Integer) 3, emptyList.get(2));
 	}
 	
 	/** Test setting an element in the list */
 	@Test
 	public void testSet()
 	{
-	    // TODO: implement this test
-	    
+		// try to set numbers out of bounds
+		try 
+		{
+			emptyList.set(0,0);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) 
+		{
+		
+		}
+		
+		// assert that set() method works
+		Integer old = list1.set(0, 10);
+		assertEquals("Old Item is ",(Integer) 65, old);
+		assertEquals("New Item is ",(Integer) 10, list1.get(0));
 	}
-	
-	
-	// TODO: Optionally add more test methods.
-	
 }
