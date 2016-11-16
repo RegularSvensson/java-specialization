@@ -1,7 +1,9 @@
 package spelling;
 
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -27,20 +29,39 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	 * For the basic part of the assignment (part 2), you should convert the 
 	 * string to all lower case before you insert it. 
 	 * 
-	 * This method adds a word by creating and linking the necessary trie nodes 
-	 * into the trie, as described outlined in the videos for this week. It 
-	 * should appropriately use existing nodes in the trie, only creating new 
-	 * nodes when necessary. E.g. If the word "no" is already in the trie, 
-	 * then adding the word "now" would add only one additional node 
-	 * (for the 'w').
-	 * 
 	 * @return true if the word was successfully added or false if it already exists
 	 * in the dictionary.
 	 */
 	public boolean addWord(String word)
 	{
-	    //TODO: Implement this method.
-	    return false;
+		// start from root of trie
+	    TrieNode currNode = root;
+	    
+	    // iterate over chars in word
+	    for (char c : word.toLowerCase().toCharArray()) {
+	    	// get childNode from currNode
+	    	TrieNode childNode = currNode.getChild(c);
+	    	
+	    	// check if childNode doesn't exists
+	    	if (childNode == null) {
+	    		// insert char into currNode
+	    		currNode = currNode.insert(c);
+	    	}
+	    	else {
+	    		// update currNode to existing childNode
+	    		currNode = childNode;
+	    	}
+	    }
+    	// check if currNode ends a word in trie
+    	// and therefore already exists
+    	if (currNode.endsWord()) {
+    		return false;
+    	}
+	    
+	    // set currNode to an end of a word in trie
+	    currNode.setEndsWord(true);
+	    
+	    return true;
 	}
 	
 	/** 
@@ -49,18 +70,71 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	 */
 	public int size()
 	{
-	    //TODO: Implement this method
-	    return 0;
+		// call helper method
+		return sizeOfChildren(root);
 	}
 	
+	/**
+	 * Returns number of words in dictionary starting from currNode.
+	 * @param currNode
+	 * @return number of words in dictionary from currNode
+	 */
+	private int sizeOfChildren(TrieNode currNode) {
+		// create nrWords counter
+		int nrWords = 0;
+		
+		// check if currNode doesn't exist
+		if (currNode == null) {
+			// return nrWords which is 0
+			return nrWords;
+		}
+		
+		// iterate over chars in currNode
+		for (char c : currNode.getValidNextCharacters()) {
+			// create nextNode to be currNodes child
+			TrieNode nextNode = currNode.getChild(c);;
+			
+			// check if nextNode ends word
+			if (nextNode.endsWord()) {
+				// increment nrWords
+				nrWords++;
+			}
+			
+			// recursively call sizeOfChildren on nextNode
+			nrWords += sizeOfChildren(nextNode);
+		}
+		
+		// return nrWords after iteration over chars and
+		// recursive method call to count words in dictionary
+		return nrWords;
+	}
 	
 	/** Returns whether the string is a word in the trie, using the algorithm
 	 * described in the videos for this week. */
 	@Override
 	public boolean isWord(String s) 
 	{
-	    // TODO: Implement this method
-		return false;
+		// start from root of trie
+	    TrieNode currNode = root;
+	    
+	    // iterate over chars in word
+	    for (char c : s.toLowerCase().toCharArray()) {
+	    	// get childNode from currNode
+	    	TrieNode childNode = currNode.getChild(c);
+	    	
+	    	// check if childNode doesn't exists
+	    	if (childNode == null) {
+	    		// s is not a word, therefore return false
+	    		return false;
+	    	}
+	    	else {
+	    		// update currNode to existing childNode
+	    		currNode = childNode;
+	    	}
+	    }
+	    
+	    // return true if last node ends a word and is therefore a word
+	    return (currNode.endsWord());
 	}
 
 	/** 
@@ -86,22 +160,68 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
      */@Override
      public List<String> predictCompletions(String prefix, int numCompletions) 
      {
-    	 // TODO: Implement this method
-    	 // This method should implement the following algorithm:
-    	 // 1. Find the stem in the trie.  If the stem does not appear in the trie, return an
-    	 //    empty list
-    	 // 2. Once the stem is found, perform a breadth first search to generate completions
-    	 //    using the following algorithm:
-    	 //    Create a queue (LinkedList) and add the node that completes the stem to the back
-    	 //       of the list.
-    	 //    Create a list of completions to return (initially empty)
-    	 //    While the queue is not empty and you don't have enough completions:
-    	 //       remove the first Node from the queue
-    	 //       If it is a word, add it to the completions list
-    	 //       Add all of its child nodes to the back of the queue
-    	 // Return the list of completions
-    	 
-         return null;
+		 // This method should implement the following algorithm:
+		 // 1. Find the stem in the trie.  If the stem does not appear in the trie, return an
+		 //    empty list
+		 // 2. Once the stem is found, perform a breadth first search to generate completions
+		 //    using the following algorithm:
+		 //    Create a queue (LinkedList) and add the node that completes the stem to the back
+		 //       of the list.
+		 //    Create a list of completions to return (initially empty)
+		 //    While the queue is not empty and you don't have enough completions:
+		 //       remove the first Node from the queue
+		 //       If it is a word, add it to the completions list
+		 //       Add all of its child nodes to the back of the queue
+		 // Return the list of completions
+		 
+    	// start from root of trie
+  		TrieNode currNode = root;
+  		
+  		// create list of strings
+ 		List<String> completions = new ArrayList<String>();
+
+	    // iterate over chars in prefix
+	    for (char c : prefix.toLowerCase().toCharArray()) {
+	    	// check if currNode has no child
+ 			if (currNode.getChild(c) == null) {
+ 				// return completions which is currently an empty list
+ 				return completions;
+ 			}
+ 			
+ 			// update currNode to currNode's child
+ 			currNode = currNode.getChild(c);
+ 		}
+	    
+	    // create queue of TrieNodes
+ 		Queue<TrieNode> queue = new LinkedList<TrieNode>();
+ 		
+ 		// add currNode to queue
+ 		queue.add(currNode);
+ 		
+ 		// loop while queue is not empty and list of completions
+ 		// is less than number completions supposed to complete
+ 		while (!queue.isEmpty() && completions.size() < numCompletions) {
+ 			// update currNode to the head of the queue
+ 			currNode = queue.remove();
+ 			
+ 			// check if currNode ends word
+ 			if (currNode.endsWord()) {
+ 				// add currNode text to list of completions
+ 				completions.add(currNode.getText());
+ 			}
+ 			
+ 			// iterate over chars in currNode
+ 			for (char c : currNode.getValidNextCharacters()) {
+ 				// get childNode from currNode
+ 				TrieNode childNode = currNode.getChild(c);
+ 				
+ 				// add childNode to queue
+ 				queue.add(childNode);
+ 			}
+ 		}
+ 		
+ 		// return list of completions
+ 		return completions;
      }
 
  	// For debugging
