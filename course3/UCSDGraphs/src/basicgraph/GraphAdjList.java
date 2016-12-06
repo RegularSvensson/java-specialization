@@ -96,7 +96,7 @@ public class GraphAdjList extends Graph {
 	 */		
 	 public List<Integer> getDistance2(int v) {
 		 // create list of integers
-		 List<Integer> distance2 = new ArrayList<>();
+		 List<Integer> distance2 = new ArrayList<Integer>();
 		 
 		 // iterate over vertices in vertex v neighbors
 		 for (int n : getNeighbors(v)) {

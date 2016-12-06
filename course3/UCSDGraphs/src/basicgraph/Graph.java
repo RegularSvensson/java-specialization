@@ -123,7 +123,7 @@ public abstract class Graph {
 	 */
 	public List<Integer> degreeSequence() {
 		// create list of integers
-		List<Integer> degrees = new ArrayList<>();
+		List<Integer> degrees = new ArrayList<Integer>();
 		
 		// iterate over number of vertices
 		for (int i = 0; i < getNumVertices(); i++) {
