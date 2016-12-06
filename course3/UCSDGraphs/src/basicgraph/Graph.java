@@ -2,6 +2,7 @@ package basicgraph;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,8 +122,19 @@ public abstract class Graph {
 	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
-		// XXX: Implement in part 1 of week 2
-		return null;
+		// create list of integers
+		List<Integer> degrees = new ArrayList<Integer>();
+		
+		// iterate over number of vertices
+		for (int i = 0; i < getNumVertices(); i++) {
+			// add size of neighbors to vertex of index i from graph to degrees
+			degrees.add(getNeighbors(i).size() + getInNeighbors(i).size());
+		}
+		
+		// sort degrees in non-increasing order
+		Collections.sort(degrees, Comparator.reverseOrder());
+		
+		return degrees;
 	}
 	
 	/**
