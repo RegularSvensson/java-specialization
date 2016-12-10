@@ -14,13 +14,19 @@ import geography.GeographicPoint;
  * Class representing a vertex (or node) in our MapGraph
  *
  */
-class MapNode
+class MapNode implements Comparable<MapNode>
 {
 	/** The list of edges out of this node */
 	private HashSet<MapEdge> edges;
 		
 	/** the latitude and longitude of this node */
 	private GeographicPoint location;
+	
+	/** distance from start to node */
+	private double distance;
+	
+	/** actual distance from start to node */
+	private double actualDistance;
 		
 	/** 
 	 * Create a new MapNode at a given Geographic location
@@ -30,6 +36,22 @@ class MapNode
 	{
 		location = loc;
 		edges = new HashSet<MapEdge>();
+		distance = 0;
+		actualDistance = 0;
+	}
+	
+	/** 
+	 * Create a new MapNode at a given Geographic location
+	 * with distance from start
+	 * @param loc the location of this node
+	 * @param distance from start node to new MapNode
+	 */
+	MapNode(GeographicPoint loc, double dis, double actualDis)
+	{
+		location = loc;
+		edges = new HashSet<MapEdge>();
+		distance = dis;
+		actualDistance = actualDis;
 	}
 		
 	/**
@@ -123,6 +145,39 @@ class MapNode
 		}
 		toReturn += ")";
 		return toReturn;
+	}
+
+	/**
+	 * @return the distance
+	 */
+	public double getDistance() {
+		return distance;
+	}
+
+	/**
+	 * @param distance the distance to set
+	 */
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
+	@Override
+	public int compareTo(MapNode o) {
+		return Double.compare(distance, o.getDistance());
+	}
+
+	/**
+	 * @return the actualDistance
+	 */
+	public double getActualDistance() {
+		return actualDistance;
+	}
+
+	/**
+	 * @param actualDistance the actualDistance to set
+	 */
+	public void setActualDistance(double actualDistance) {
+		this.actualDistance = actualDistance;
 	}
 
 }
