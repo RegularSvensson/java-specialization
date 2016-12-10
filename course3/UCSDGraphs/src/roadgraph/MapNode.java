@@ -1,3 +1,6 @@
+/**
+ * A class to represent a node in the map
+ */
 package roadgraph;
 
 import java.util.HashSet;
@@ -5,157 +8,121 @@ import java.util.Set;
 
 import geography.GeographicPoint;
 
-public class MapNode implements Comparable<MapNode> {
-	
-	/* instance variables */
-	// list of edges out from node
+/**
+ * @author UCSD MOOC development team
+ * 
+ * Class representing a vertex (or node) in our MapGraph
+ *
+ */
+class MapNode
+{
+	/** The list of edges out of this node */
 	private HashSet<MapEdge> edges;
-	
-	// latitude and longitude of node
+		
+	/** the latitude and longitude of this node */
 	private GeographicPoint location;
-	
-	// predicted distance from start to node
-	private double distance;
-	
-	// actual distance from start to node
-	private double actualDistance;
-	
-	/**
-	 * Class constructor.
-	 * @param location
+		
+	/** 
+	 * Create a new MapNode at a given Geographic location
+	 * @param loc the location of this node
 	 */
-	public MapNode(GeographicPoint location) {
-		setEdges(new HashSet<MapEdge>());
-		setLocation(location);
-		distance = 0.0;
-		actualDistance = 0.0;
+	MapNode(GeographicPoint loc)
+	{
+		location = loc;
+		edges = new HashSet<MapEdge>();
 	}
-	
-	//TODO rewrite and check
-    public double getDistanceTo(MapNode to) {
-        if (!getNeighbors().contains(to)) throw new IllegalArgumentException("Cannot find path");
-        GeographicPoint toLocation = to.getLocation();
-        for (MapEdge me : edges) {
-            if (getLocation().equals(toLocation)) {
-                return me.getDistance();
-            }
-        }
-        return 0;
-    }
-	
+		
 	/**
-	 * Adds edge to MapNode.
-	 * @param edge
+	 * Add an edge that is outgoing from this node in the graph
+	 * @param edge The edge to be added
 	 */
-	public void addEdge(MapEdge edge)
+	void addEdge(MapEdge edge)
 	{
 		edges.add(edge);
 	}
 	
-	/**
-	 * Returns set of neighbors of MapNode.
-	 * @return neighbors
+	/**  
+	 * Return the neighbors of this MapNode 
+	 * @return a set containing all the neighbors of this node
 	 */
-	public Set<MapNode> getNeighbors() {
+	Set<MapNode> getNeighbors()
+	{
 		Set<MapNode> neighbors = new HashSet<MapNode>();
-		
 		for (MapEdge edge : edges) {
 			neighbors.add(edge.getOtherNode(this));
 		}
-		
 		return neighbors;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return location.hashCode();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof MapNode) || (obj == null)) {
-			return false;
-		}
-		
-		MapNode node = (MapNode) obj;
-		
-		return node.location.equals(this.location);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "MapNode [edges=" + edges + ", location=" + location + "]";
-	}
-
 	/**
-	 * @return the edges
+	 * Get the geographic location that this node represents
+	 * @return the geographic location of this node
 	 */
-	public HashSet<MapEdge> getEdges() {
-		return edges;
-	}
-
-	/**
-	 * @param edges the edges to set
-	 */
-	public void setEdges(HashSet<MapEdge> edges) {
-		this.edges = edges;
-	}
-
-	/**
-	 * @return the location
-	 */
-	public GeographicPoint getLocation() {
+	GeographicPoint getLocation()
+	{
 		return location;
 	}
-
+	
 	/**
-	 * @param location the location to set
+	 * return the edges out of this node
+	 * @return a set contianing all the edges out of this node.
 	 */
-	public void setLocation(GeographicPoint location) {
-		this.location = location;
-	}
-
-	@Override
-	public int compareTo(MapNode m) {
-		return ((Double)(this.getDistance() + this.getActualDistance())).compareTo((Double) (m.getDistance() + m.getActualDistance()));
-
-	}
-
-	/**
-	 * @return the distance
-	 */
-	public double getDistance() {
-		return distance;
-	}
-
-	/**
-	 * @param distance the distance to set
-	 */
-	public void setDistance(double distance) {
-		this.distance = distance;
-	}
-
-	/**
-	 * @return the actualDistance
-	 */
-	public double getActualDistance() {
-		return actualDistance;
-	}
-
-	/**
-	 * @param actualDistance the actualDistance to set
-	 */
-	public void setActualDistance(double actualDistance) {
-		this.actualDistance = actualDistance;
+	Set<MapEdge> getEdges()
+	{
+		return edges;
 	}
 	
+	/** Returns whether two nodes are equal.
+	 * Nodes are considered equal if their locations are the same, 
+	 * even if their street list is different.
+	 * @param o the node to compare to
+	 * @return true if these nodes are at the same location, false otherwise
+	 */
+	@Override
+	public boolean equals(Object o)
+	{
+		if (!(o instanceof MapNode) || (o == null)) {
+			return false;
+		}
+		MapNode node = (MapNode)o;
+		return node.location.equals(this.location);
+	}
+	
+	/** Because we compare nodes using their location, we also 
+	 * may use their location for HashCode.
+	 * @return The HashCode for this node, which is the HashCode for the 
+	 * underlying point
+	 */
+	@Override
+	public int hashCode()
+	{
+		return location.hashCode();
+	}
+	
+	/** ToString to print out a MapNode object
+	 *  @return the string representation of a MapNode
+	 */
+	@Override
+	public String toString()
+	{
+		String toReturn = "[NODE at location (" + location + ")";
+		toReturn += " intersects streets: ";
+		for (MapEdge e: edges) {
+			toReturn += e.getRoadName() + ", ";
+		}
+		toReturn += "]";
+		return toReturn;
+	}
+
+	// For debugging, output roadNames as a String.
+	public String roadNamesAsString()
+	{
+		String toReturn = "(";
+		for (MapEdge e: edges) {
+			toReturn += e.getRoadName() + ", ";
+		}
+		toReturn += ")";
+		return toReturn;
+	}
+
 }
