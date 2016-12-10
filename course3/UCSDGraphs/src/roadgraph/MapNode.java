@@ -15,7 +15,7 @@ public class MapNode implements Comparable<MapNode> {
 	private GeographicPoint location;
 	
 	// predicted distance from start to node
-	private double predictedDistance;
+	private double distance;
 	
 	// actual distance from start to node
 	private double actualDistance;
@@ -27,10 +27,21 @@ public class MapNode implements Comparable<MapNode> {
 	public MapNode(GeographicPoint location) {
 		setEdges(new HashSet<MapEdge>());
 		setLocation(location);
-		predictedDistance = 0.0;
+		distance = 0.0;
 		actualDistance = 0.0;
 	}
-
+	
+	//TODO rewrite and check
+    public double getDistanceTo(MapNode to) {
+        if (!getNeighbors().contains(to)) throw new IllegalArgumentException("Cannot find path");
+        GeographicPoint toLocation = to.getLocation();
+        for (MapEdge me : edges) {
+            if (getLocation().equals(toLocation)) {
+                return me.getDistance();
+            }
+        }
+        return 0;
+    }
 	
 	/**
 	 * Adds edge to MapNode.
@@ -115,22 +126,22 @@ public class MapNode implements Comparable<MapNode> {
 
 	@Override
 	public int compareTo(MapNode m) {
-		return ((Double)(this.getPredictedDistance() + this.getActualDistance())).compareTo((Double) (m.getPredictedDistance() + m.getActualDistance()));
+		return ((Double)(this.getDistance() + this.getActualDistance())).compareTo((Double) (m.getDistance() + m.getActualDistance()));
 
 	}
 
 	/**
-	 * @return the predictedDistance
+	 * @return the distance
 	 */
-	public double getPredictedDistance() {
-		return predictedDistance;
+	public double getDistance() {
+		return distance;
 	}
 
 	/**
-	 * @param predictedDistance the predictedDistance to set
+	 * @param distance the distance to set
 	 */
-	public void setPredictedDistance(double predictedDistance) {
-		this.predictedDistance = predictedDistance;
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 
 	/**
