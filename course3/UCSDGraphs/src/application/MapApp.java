@@ -340,7 +340,12 @@ implements MapComponentInitializedListener {
 		rbB.setToggleGroup(group);
 		rbD.setToggleGroup(group);
 		rbA.setToggleGroup(group);
-		return new LinkedList<RadioButton>(Arrays.asList(rbB, rbD, rbA));
+		
+		// Crow path
+		RadioButton rbC = new RadioButton("Crow path");
+		rbC.setUserData("Crow path");
+		rbC.setToggleGroup(group);
+		return new LinkedList<RadioButton>(Arrays.asList(rbB, rbD, rbA, rbC));
 	}
 
 
